@@ -1,8 +1,15 @@
-all: clientA.exec clientB.exec
+SRC = $(wildcard *.cpp)
+TEST = $(wildcard *.cc)
 
-%.exec: libfib_fast.o libfib_slow.o libfib_wrong.o %.o
+all: $(TEST:%.cc=%.exec)
+
+info:
+	@echo $(TEST:%.cc=%.o)
+	@echo $(TEST:%.cc=hello-%-world)
+
+%.exec: $(SRC:%.cpp=%.o) %.o
 	@echo "Compiling $*.exec"
-	@g++ -std=c++11 libfib_fast.o libfib_slow.o libfib_wrong.o $*.o -o $*.exec
+	@g++ -std=c++11 $(SRC:%.cpp=%.o) $*.o -o $*.exec
 
 %.o: %.cpp
 	@echo "Compiling $*"
@@ -13,7 +20,7 @@ all: clientA.exec clientB.exec
 	@g++ -std=c++11 -c $*.cc -o $*.o
 
 clean:
-	@rm -rf clientA.exec clientB.exec clientA.o clientB.o libfib_fast.o libfib_slow.o libfib_wrong.o
+	@rm -rf $(SRC:%.cpp=%.o) $(TEST:%.cc=%.o) $(TEST:%.cc=%.exec)
 
 .PHONY: all clean
 

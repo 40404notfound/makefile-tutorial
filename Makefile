@@ -1,4 +1,5 @@
-CXXFLAGS += -std=c++11
+CXXFLAGS += -g -std=c++11
+DB ?= gdb
 
 SRC = $(wildcard *.cpp)
 TEST = $(wildcard *.cc)
@@ -20,6 +21,18 @@ all: $(TEST:%.cc=%.exec)
 clean:
 	@rm -rf $(SRC:%.cpp=%.o) $(TEST:%.cc=%.o) $(TEST:%.cc=%.exec)
 
-.PHONY: all clean
+debug-%: %.exec
+	@$(DB) $*.exec
+
+test-%: %.exec
+	@mkdir -p stdout
+	@mkdir -p stderr
+	@./$*.exec > stdout/$* 2> stderr/$*
+	@echo "$* test complete"
+
+test: $(TEST:%.cc=test-%)
+	@echo "test complete"
+
+.PHONY: all clean test test-% debug-%
 
 .PRECIOUS: %.o

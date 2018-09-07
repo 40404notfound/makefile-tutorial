@@ -1,7 +1,7 @@
 #include <cstdio>
 
 int main() {
-  printf("Hello World\n");
+  printf("Hello EECS482\n");
 
   return 0;
 }

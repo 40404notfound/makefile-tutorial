@@ -1,5 +1,7 @@
+# The first target is the default target
 all: clientA.exec clientB.exec
 
+# To hide a command from output, prefix @ before it
 clientA.exec: libfib_fast.o libfib_slow.o libfib_wrong.o clientA.o
 	@echo "Compiling clientA.exec"
 	@g++ -std=c++11 libfib_fast.o libfib_slow.o libfib_wrong.o clientA.o -o clientA.exec
@@ -32,4 +34,5 @@ clientB.o: clientB.cc
 clean:
 	@rm -rf clientA.exec clientB.exec clientA.o clientB.o libfib_fast.o libfib_slow.o libfib_wrong.o
 
+# Make a rule phony if you want to run it regardlessly
 .PHONY: all clean
